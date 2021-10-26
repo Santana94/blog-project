@@ -158,16 +158,20 @@ class TestComment(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(created_comment.content, data['content'])
 
-    def test_comment_post_endpoint_with_no_blog_information(self):
+    def test_comment_post_endpoint_with_no_information(self):
         self.assertEqual(Comment.objects.count(), 0)
-        data = {
-            'content': 'My comment content with lots of information',
-        }
+        data = {}
         response = self.client.post(self.comment_url, data, format='json')
         response_data = json.loads(response.content)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response_data, {"blog": ['This field is required.']})
+        self.assertEqual(
+            response_data,
+            {
+                "blog": ['This field is required.'],
+                "content": ['This field is required.'],
+            }
+        )
 
     def test_comment_post_endpoint_with_invalid_blog_information(self):
         self.assertEqual(Comment.objects.count(), 0)
