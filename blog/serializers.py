@@ -11,10 +11,11 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class BlogSerializer(serializers.ModelSerializer):
     image = serializers.FileField(required=False)
+    comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Blog
-        fields = ['id', 'created_at', 'title', 'description', 'image']
+        fields = ['id', 'created_at', 'title', 'description', 'image', 'comments']
 
     def validate_image(self, uploaded_file):
         if uploaded_file is not None:

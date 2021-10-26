@@ -30,6 +30,7 @@ class TestBlog(APITestCase):
                 "title": blog.title,
                 "description": blog.description,
                 "image": str(blog.image),
+                "comments": []
             }
             for blog in sorted(blogs, key=lambda x: x.id)
         ]
@@ -50,6 +51,15 @@ class TestBlog(APITestCase):
                 "title": blog.title,
                 "description": blog.description,
                 "image": str(blog.image),
+                "comments": [
+                    {
+                        "id": comment.id,
+                        "created_at": comment.created_at.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+                        "content": comment.content,
+                        "blog": comment.blog.id,
+                    }
+                    for comment in blog.comments.all()
+                ],
             }
             for blog in sorted([*blogs, *blogs_with_comments], key=lambda x: x.id)
         ]

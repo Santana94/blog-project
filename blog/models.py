@@ -17,4 +17,4 @@ class Blog(AbstractModel):
 
 class Comment(AbstractModel):
     content = models.TextField("Content")
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="comments")
